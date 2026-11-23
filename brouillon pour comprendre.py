@@ -1,6 +1,69 @@
 import tkinter as tk
-# Importe tkinter pour pouvoir créer une interface graphique.
-# "tk" est un raccourci pour écrire tkinter.
+
+# -----------------------------------------
+# FONCTION POUR PASSER À L'ÉTAPE SUIVANTE
+# -----------------------------------------
+
+def continuer():
+    # Récupère le revenu entré par l'utilisateur.
+    montant = revenu.get()
+
+    # Vérifie que l'utilisateur a bien entré un montant.
+    if montant == "":
+        erreur.config(text="Veuillez entrer votre revenu.")
+        return
+
+    # Supprime tous les éléments de la fenêtre.
+    for widget in fenetre.winfo_children():
+        widget.destroy()
+
+    # Affiche le nouveau titre.
+    titre = tk.Label(
+        fenetre,
+        text="Entrez vos dépenses mensuelles",
+        font=("Arial", 20, "bold"),
+        bg="lightblue",
+        fg="black"
+    )
+    titre.pack(pady=30)
+
+    # Liste des différentes catégories de dépenses.
+    categories = [
+        "Logement (loyer, charges...)",
+        "Alimentation",
+        "Transport",
+        "Loisirs",
+        "Santé",
+        "Abonnements",
+        "Shopping",
+        "Autres dépenses"
+    ]
+
+    # Crée une case pour chaque catégorie.
+    global depenses
+    depenses = {}
+
+    for categorie in categories:
+
+        # Affiche le nom de la catégorie.
+        label = tk.Label(
+            fenetre,
+            text=categorie,
+            font=("Arial", 13),
+            bg="lightblue"
+        )
+        label.pack(pady=5)
+
+        # Crée une case pour entrer le montant.
+        entree = tk.Entry(
+            fenetre,
+            font=("Arial", 13),
+            width=20
+        )
+        entree.pack(pady=2)
+
+        # Enregistre la case dans le dictionnaire.
+        depenses[categorie] = entree
 
 
 # -----------------------------------------
@@ -8,17 +71,13 @@ import tkinter as tk
 # -----------------------------------------
 
 def commencer():
-    # Cette fonction se déclenche quand on clique sur "Commencer !"
 
     for widget in fenetre.winfo_children():
-        # Récupère tous les éléments présents dans la fenêtre.
         widget.destroy()
-        # Supprime chaque élément de la fenêtre.
 
-    # Affiche le nouveau texte après avoir cliqué.
     titre = tk.Label(
         fenetre,
-        text="Pour commencer, entrez votre revenu total",
+        text="Pour commencer, entrez votre revenu total mensuel",
         font=("Arial", 20, "bold"),
         bg="lightblue",
         fg="black",
@@ -26,7 +85,8 @@ def commencer():
     )
     titre.pack(pady=80)
 
-    # Crée une case pour que l'utilisateur puisse entrer son revenu.
+    global revenu
+
     revenu = tk.Entry(
         fenetre,
         font=("Arial", 16),
@@ -34,22 +94,39 @@ def commencer():
     )
     revenu.pack(pady=20)
 
+    # Crée un message d'erreur.
+    global erreur
+
+    erreur = tk.Label(
+        fenetre,
+        text="",
+        font=("Arial", 12),
+        fg="red",
+        bg="lightblue"
+    )
+    erreur.pack()
+
+    # Crée le bouton Continuer.
+    bouton_continuer = tk.Button(
+        fenetre,
+        text="Continuer",
+        font=("Arial", 18),
+        bg="green",
+        fg="white",
+        command=continuer
+    )
+    bouton_continuer.pack(pady=20)
+
 
 # -----------------------------------------
 # CRÉATION DE LA FENÊTRE PRINCIPALE
 # -----------------------------------------
 
 fenetre = tk.Tk()
-# Crée la fenêtre.
 
 fenetre.title("My Budget")
-# Donne un titre à la fenêtre.
-
-fenetre.geometry("700x500")
-# Définit la taille de la fenêtre (largeur x hauteur).
-
+fenetre.geometry("700x650")
 fenetre.configure(bg="lightblue")
-# Définit la couleur de fond.
 
 
 # -----------------------------------------
@@ -58,31 +135,15 @@ fenetre.configure(bg="lightblue")
 
 titre = tk.Label(
     fenetre,
-    # Indique dans quelle fenêtre afficher le texte.
-
-    text="Bonjour et bienvenue dans My Budget, le logiciel de gestion de budget personnel préféré des adultes. En entrant vos revenus, dépenses, etc ce logiciel vous permettra d'avoir une vision claire sur la gestion de votre argent, et vous aidera à definir des objectifs d'épargne.",
-    # Définit le texte qui sera affiché.
-
+    text="Bonjour et bienvenue dans My Budget, le logiciel de gestion de budget personnel préféré des adultes. En entrant vos revenus, dépenses, etc. ce logiciel vous permettra d'avoir une vision claire sur la gestion de votre argent et vous aidera à définir des objectifs d'épargne.",
     font=("Arial", 15),
-    # Définit la police et la taille.
-
     bg="lightblue",
-    # Couleur de fond.
-
     fg="black",
-    # Couleur du texte.
-
     wraplength=600,
-    # Permet au texte de revenir à la ligne.
-
     justify="center"
-    # Centre le texte.
 )
 
 titre.pack(pady=50, padx=30)
-# Affiche le texte dans la fenêtre.
-# pady = espace vertical.
-# padx = espace horizontal.
 
 
 # -----------------------------------------
@@ -92,23 +153,13 @@ titre.pack(pady=50, padx=30)
 bouton = tk.Button(
     fenetre,
     text="Commencer !",
-    # Texte écrit sur le bouton.
-
     font=("Arial", 18),
-    # Taille du texte.
-
     bg="green",
-    # Couleur du bouton.
-
     fg="white",
-    # Couleur de l'écriture.
-
     command=commencer
-    # Lance la fonction commencer() quand on clique.
 )
 
 bouton.pack(pady=20)
-# Affiche le bouton dans la fenêtre.
 
 
 # -----------------------------------------
@@ -116,4 +167,3 @@ bouton.pack(pady=20)
 # -----------------------------------------
 
 fenetre.mainloop()
-# Permet à la fenêtre de rester ouverte et interactive.
